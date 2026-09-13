@@ -4,7 +4,7 @@ using namespace std;
 struct node{ // STRUCT NODE
     int data; // DỮ LIỆU
     node* next; // CON TRỎ NEXT
-}
+};
 
 node* Makenode(int x){ // HÀM TẠO NODE
     node* NewNode = new node; // CON TRỎ NEWNODE QUẢN LÝ Ô NODE ĐƯỢC CẤP PHÁT
@@ -59,7 +59,7 @@ node* InsertMiddle(node* head, int x, int index){ // THÊM NODE VÀO GIỮA
     for(int i = 0; (i < index-1) && (temp->next != nullptr); i++){
         temp = temp->next;
     } // CHÈN VÀO GIỮA
-    Newnode->next = temp->next;
+    NewNode->next = temp->next;
     temp->next = NewNode;
     return head;
 }
@@ -95,7 +95,7 @@ node* DeletaMiddle(node* head, int index){ // XÓA GIỮA
     }
     node* temp = head;
     // DUYỆT TỚI VỊ TRÍ K-1
-    for(int i = 0; (i < index-1) && (temp->next != nullptr)){
+    for(int i = 0; (i < index-1) && (temp->next != nullptr); i++){
         temp = temp->next;
     }
     if(temp->next == nullptr) return head; // INDEX VƯỢT QUÁ LIST

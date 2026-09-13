@@ -1,15 +1,15 @@
 #include <iostream>
 using namespace std;
 
-struct node(){ // STRUCT NODE
+struct node{ // STRUCT NODE
     int data; // DỮ LIỆU
     node* next; // CON TRỎ NEXT TỚI NODE TIẾP THEO
-}
+};
 
 node* MakeNode(int x){
     node* NewNode = new node;
     NewNode->data = x;
-    NewNode->data = nullptr;
+    NewNode->next = nullptr;
     return NewNode;
 }
 

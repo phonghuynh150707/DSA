@@ -1,10 +1,10 @@
 #include <iostream>
 using namespace std;
-struct node(){ // STRUCT NODE
+struct node{ // STRUCT NODE
     int data; // DỮ LIỆU
     node* next; // CON TRỎ TỚI NODE TIẾP THEO
     node* prev; // CON TRỎ TỚI NODE PHÍA TRƯỚC
-}
+};
 
 node* MakeNode(int x){
     node* NewNode = new node;
