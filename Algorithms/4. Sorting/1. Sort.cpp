@@ -228,4 +228,5 @@ int main(){
     int left, right; cin >> left >> right;
     sort(a+left,a+right+1); // XẾP TRONG ĐOẠN [L,R]
     sort(a,a+n,comp);
+    stable_sort(a,a+n,comp); // GIỮ NGUYÊN TÍNH THỨ TỰ XUẤT HIỆN
 }

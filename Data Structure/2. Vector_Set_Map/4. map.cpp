@@ -1,6 +1,6 @@
 #include <iostream>
 #include <map> // LƯU DẠNG PAIR, XẾP THEO KEY (KEY,VALUE)
-
+using namespace std;
 int main(){
     map<int,int> mp; // KHAI BÁO MAP MP RỖNG
     mp[3] = 2; // TẠO CẶP KEY_VALUE {3,2} TRONG MAP
@@ -13,7 +13,7 @@ int main(){
     for( auto x : mp) cout << x.first << " " << x.second;
     for( pair<int,int> x : mp) cout << x.first << " " << x.second;
     for( auto [key,value] : mp) cout << key << " " << value;
-    for(auto it = mp.begin(); it != mp.end; it++){
+    for(auto it = mp.begin(); it != mp.end(); it++){
         cout << (*it).first << " " << (*it).second;
     }
 
