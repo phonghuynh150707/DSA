@@ -2,7 +2,8 @@
 #include <algorithm>
 using namespace std;
 
-// CÂY NHỊ PHÂN TÌM KIẾM (BST): MỌI NÚT THÌ DATA > TẤT CẢ CÂY CON PHẢI, < TẤT CẢ CÂY CON TRÁI
+// CÂY NHỊ PHÂN TÌM KIẾM (BST): MỌI NÚT THÌ DATA < TẤT CẢ CÂY CON PHẢI, > TẤT CẢ CÂY CON TRÁI
+// CÂY CON BÊN TRÁI VÀ BÊN PHẢI CŨNG LÀ BST
 
 struct node{ // ĐỊNH NGHĨA MỘT NODE
     int data; // DỮ LIỆU 
@@ -52,9 +53,6 @@ node* Search(node* root, int key){ // TRẢ VỀ ĐỊA CHỈ BẰNG ĐỆ QUY
     return res;
 }
 
-// CÁC THUẬT TOÁN XÓA DATA
-
-
 // DUYỆT CÂY
 // LNR: TĂNG DẦN
 // RNL: GIẢM DẦN
@@ -100,7 +98,7 @@ bool IsBST(node* root, long long minValue, long long maxValue){
 }
 
 void clear(node*& root){ // HỦY CÂY
-    if(root != nullptr){
+    if(root != nullptr){ // XÓA TỪ NODE LÁ ĐI LÊN
         clear(root->left);
         clear(root->right);
         delete root;
@@ -108,47 +106,59 @@ void clear(node*& root){ // HỦY CÂY
     }
 }
 
-int Height(node* root){
+int Height(node* root){ // ĐỘ CAO CỦA CÂY, NHƯ CÂY NHỊ PHÂN!
     if(root == nullptr) return 0;
     int leftHeight = Height(root->left);
     int rightHeight = Height(root->right);
     return max(leftHeight, rightHeight) + 1;
 }
 
-node* FindMin(node* root){
-    if(root == nullptr) return nullptr;
-    while(root->left != nullptr) root = root->left;
-    return root;
+// THUẬT TOÁN XÓA NODE
+node* FindMin(node* root){ // TÌM NODE NHỎ NHẤT (TRÁI CÙNG)
+    if(root == nullptr) return nullptr; // CÂY RỖNG THÌ NULL
+    while(root->left != nullptr) root = root->left; // ĐI HẾT VỀ PHÍA TRÁI CÙNG
+    return root; // TRẢ VỀ CON TRỎ CHỈ TỚI NODE ĐÓ
 }
 
-void Delete(node*& root, int key){
+void Delete(node*& root, int key){ // XÓA 1 GIÁ TRỊ TRONG CÂY
     if(root == nullptr) return;
-    if(key < root->data) Delete(root->left, key);
-    else if(key > root->data) Delete(root->right, key);
+    if(key < root->data) Delete(root->left, key); // BÉ HƠN THÌ ĐI QUA TRÁI
+    else if(key > root->data) Delete(root->right, key); // LỚN HỚN THÌ ĐI QUA PHẢI 
     else{
-        // Có duplicate
-        if(root->count > 1) root->count--;
-        // Không có con trái
-        else if(root->left == nullptr){
-            node* temp = root;
-            root = root->right;
+        if(root->count > 1) root->count--; // XÉT GIẢM DUPLICATE
+        else if(root->left == nullptr){ // KHÔNG CÓ CÂY CON TRÁI
+            node* temp = root; // ĐƯA CON PHẢI LÊN THAY NODE HIỆN TẠI
+            root = root->right; // RỒI XÓA NODE HIỆN TẠI
             delete temp;
         }
-        // Không có con phải
-        else if(root->right == nullptr){
-            node* temp = root;
-            root = root->left;
+        else if(root->right == nullptr){ // KHÔNG CÓ CÂY CON PHẢI
+            node* temp = root; // ĐƯA CÂY TRÁI LÊN NODE HIỆN TẠI
+            root = root->left; // XÓA NODE HIỆN TẠI
             delete temp;
         }
-        // Có 2 con
-        else{
-            node* temp = FindMin(root->right);
-            root->data = temp->data;
-            root->count = temp->count;
-            temp->count = 1;
-            Delete(root->right, temp->data);
+        else{ // CÓ CẢ 2 CÂY CON TRÁI VÀ PHẢI
+            node* temp = FindMin(root->right); // XÓA SAO CHO VẪN DUY TRÌ BST
+            root->data = temp->data; // TÌM NODE NGOÀI CÙNG PHẢI
+            root->count = temp->count; // ĐƯA LÊN TẠM THỜI (LẤY ĐÚNG DỮ LIỆU VÀ COUNT)
+            temp->count = 1; // CHO COUNT TRÁI CÙNG PHẢI = 0 ĐỂ XÓA NÓ!
+            Delete(root->right, temp->data); // SAU XÓA VẪN DUY TRÌ CÂY BST!
         }
     }
+}
+
+// THUẬT TOÁN THÊM NODE: NODE MỚI PHẢI ĐƯỢC THÊM VÀO VỊ TRÍ LÁ
+void Insert(node*& root, int key) {
+    if (root == nullptr) { // CÂY RỖNG → TẠO NODE MỚI
+        root = new node; // TẠO NODE MỚI
+        root->data = key;
+        root->count = 1;
+        root->left = nullptr;
+        root->right = nullptr;
+        return;
+    }
+    if (key < root->data) Insert(root->left, key); // KEY NHỎ HƠN → ĐI SANG CÂY CON TRÁI
+    else if (key > root->data) Insert(root->right, key); // KEY LỚN HƠN → ĐI SANG CÂY CON PHẢI
+    else root->count++; // KEY ĐÃ TỒN TẠI → TĂNG COUNT
 }
 int main(){
 

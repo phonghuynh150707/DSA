@@ -3,17 +3,43 @@
 #include <queue>
 using namespace std;
 
-struct node{
+// LÝ THUYẾT CÂY NHỊ PHÂN (BINARY TREE)
+
+// MỖI NODE CHA CÓ TỐI ĐA 2 NODE CON (TRÁI VÀ PHẢI)
+// NODE GỐC (ROOT): NODE TẠO NÊN CÂY NHỊ PHÂN
+// NODE CHA (PARENT), NODE LÁ (LEAF), NODE TRUNG GIAN (INTERNAL)
+// NODE TRƯỚC (ANCESTOR), NODE SAU TRÁI (LEFT DESCENDENT), NODE SAU PHẢI (RIGHT DESCENDENT)
+// BẬC CỦA NODE (DEGREE): SỐ CÂY CON TỐI ĐA CỦA MỘT NODE, NHỊ PHÂN (2)
+// MỨC CỦA NODE (LEVEL): NODE GỐC MỨC 0, NODE KHÁC THÌ BẰNG NODE CHA + 1
+// CHIỀU SÂU NODE: SỐ CẠNH TRÊN ĐƯỜNG ĐI TỪ ROOT TỚI NODE XÉT
+// CHIỀU SÂU CÂY: CHIÊU SÂU TỐI ĐA CỦA MỘT NODE
+
+// CÁC KIỂU CÂY NHỊ PHÂN:
+// CÂY NHỊ PHÂN ĐẦY ĐỦ (FULL BINARY TREE): CÓ 0 HOẶC 2 NODE CON
+// CÂY NHỊ PHÂN HOÀN HẢO (PERFECT BINARY TREE): INTERNAL ĐỀU 2 NODE CON, VÀ LÁ ĐỀU CÙNG MỨC
+// CÂY NHỊ PHÂN HOÀN CHỈNH (COMPLETE BINARY TREE): TẤT CẢ NODE LÁ PHẢI TINH GỌN VỀ BÊN TRÁI
+// CÂY NHỊ PHÂN CÂN BẰNG (BALANCED BINARY TREE): MỖI NODE CÓ ĐỘ CAO CÂY CON BÊN TRÁI VÀ BÊN PHẢI KHÔNG LỆCH QUÁ 1
+
+
+struct node{ // NODE MỘT CÂY NHỊ PHÂN
     int data; // DỮ LIỆU NODE
     node* left; // CON TRỎ NÚT CON TRÁI
     node* right; // CON TRỎ NÚT CON PHẢI
 };
 
-void init(node* &root){ // KHỞI TẠO CÂY RỖNG (EMPTY TREE)
-    root = nullptr; // ROOT LÀ NULL
+node* MakeNode(int x){ // TẠO MỘT NODE TRÊN CÂY
+    node* NewNode = new node; // CẤP PHÁT NODE MỚI
+    NewNode->data = x; // GÁN DỮ LIỆU
+    NewNode->left = nullptr; // CON TRỎ TRÁI LÀ NULL
+    NewNode->right = nullptr; // CON TRỎ PHẢI LÀ NULL
+    return NewNode; 
 }
 
-bool empty(node* root){
+void init(node*& root){ // KHỞI TẠO CÂY RỖNG (EMPTY TREE)
+    root = nullptr; // ROOT LÀ NULL
+} // TRUYỀN ROOT GỐC VÀO TRÁNH TẠO BẢN SAO (TRUYỀN GIÁ TRỊ)
+
+bool empty(node* root){ // KIỂM TRA CÂY RỖNG: KHÔNG CÓ NODE NÀO
     return root == nullptr; // ROOT TRỎ TỚI NULL THÌ CÂY RỖNG
 }
 
@@ -94,6 +120,29 @@ void LRN2(node* root){
                 cout << temp->data << " ";
                 lastNode = st.top(); st.pop();
             }
+        }
+    }
+}
+// DUYỆT CÂY XOẮN ỐC (SPIRAL): DUYỆT TỪNG LEVEL NHƯNG ĐỔI HƯỚNG MỖI KHI XUỐNG
+void spiral(node* root){
+    if (root == nullptr) return; // CÂY RỖNG THÌ KHÔNG DUYỆT
+    stack<node*> s1;
+    stack<node*> s2;
+    s1.push(root);
+    while (!s1.empty() || !s2.empty()) {
+        // Duyệt từ trái -> phải
+        while (!s1.empty()) {
+            node* cur = s1.top(); s1.pop();
+            cout << cur->data << " ";
+            if(cur->left != nullptr) s2.push(cur->left);
+            if(cur->right != nullptr) s2.push(cur->right);
+        }
+        // Duyệt từ phải -> trái
+        while (!s2.empty()) {
+            node* cur = s2.top(); s2.pop();
+            cout << cur->data << " ";
+            if(cur->right != nullptr) s1.push(cur->right);
+            if(cur->left != nullptr) s1.push(cur->left);
         }
     }
 }
